@@ -21,29 +21,64 @@ DrawManager* DrawManager::GetInstance()
   return m_pInstance;
 }
 
-void DrawManager::BasicRect(rect Rect, sf::Color color)
+void DrawManager::BasicRect(sf::FloatRect Rect, sf::Color color)
 {
   sf::RectangleShape rectangle;
 
-  rectangle.setSize(sf::Vector2f(Rect.w, Rect.h));
-  rectangle.setPosition(Rect.x, Rect.y);
+  rectangle.setSize(sf::Vector2f(Rect.width, Rect.height));
+  rectangle.setPosition(Rect.left, Rect.top);
   rectangle.setOutlineThickness(0);
   rectangle.setFillColor(color);
   
   Game::instance.GetWindow().draw(rectangle);
 }
 
-void DrawManager::DrawText(std::string Text, int fontSize, sf::Vector2f Position, sf::Color Color)
+sf::FloatRect DrawManager::DrawText(std::string Text, int fontSize, sf::Vector2f Position, sf::Color Color, alignment Alignment)
 {
   
   // Create text
   sf::Text text(Text, m_defaultFont);
   text.setCharacterSize(fontSize);
   text.setColor(Color);
-  text.setPosition(sf::Vector2f(Position.x - text.getLocalBounds().width / 2, Position.y - text.getLocalBounds().height / 2));
+
+  switch (Alignment)
+  {
+  case alignment::TOPLEFT:
+    text.setPosition(sf::Vector2f(Position.x, Position.y));
+    break;
+  case alignment::TOPRIGHT:
+    text.setPosition(sf::Vector2f(Position.x - text.getLocalBounds().width, Position.y));
+    break;
+  case alignment::TOPCENTER:
+    text.setPosition(sf::Vector2f(Position.x - (text.getLocalBounds().width/2), Position.y));
+    break;
+  case alignment::MIDDLELEFT:
+    text.setPosition(sf::Vector2f(Position.x, Position.y - (text.getLocalBounds().height / 2)));
+    break;
+  case alignment::MIDDLERIGHT:
+    text.setPosition(sf::Vector2f(Position.x - text.getLocalBounds().width, Position.y - (text.getLocalBounds().height / 2)));
+    break;
+  case alignment::MIDDLECENTER:
+    text.setPosition(sf::Vector2f(Position.x - text.getLocalBounds().width / 2, Position.y - (text.getLocalBounds().height / 2)));
+    break;
+  case alignment::BOTTOMLEFT:
+    text.setPosition(sf::Vector2f(Position.x, Position.y - (text.getLocalBounds().height)));
+    break;
+  case alignment::BOTTOMRIGHT:
+    text.setPosition(sf::Vector2f(Position.x - text.getLocalBounds().width, Position.y - (text.getLocalBounds().height)));
+    break;
+  case alignment::BOTTOMCENTER:
+    text.setPosition(sf::Vector2f(Position.x - (text.getLocalBounds().width / 2), Position.y - (text.getLocalBounds().height)));
+    break;
+  default:
+    break;
+  }
 
   // Draw it
   Game::instance.GetWindow().draw(text);
+
+  // Return text bounds
+  return text.getGlobalBounds();
 }
 
 DrawManager *DrawManager::m_pInstance = new DrawManager;

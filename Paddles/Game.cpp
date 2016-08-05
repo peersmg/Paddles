@@ -70,11 +70,10 @@ void Game::GameLoop()
         _prevGameState = GameState::Uninitialized;
         break;
       case Game::GameState::ShowingSplash:
-
         _prevGameState = GameState::ShowingSplash;
         break;
       case Game::GameState::Paused:
-
+        std::cout << "Message: Paused\n";
         _prevGameState = GameState::Paused;
         break;
       case Game::GameState::ShowingMenu:
@@ -89,7 +88,7 @@ void Game::GameLoop()
       }
         break;
       case Game::GameState::Playing:
-
+        std::cout << "Message: Playing\n";
         _prevGameState = GameState::Playing;
         break;
       case Game::GameState::Exiting:
