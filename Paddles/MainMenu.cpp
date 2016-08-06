@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "InputManager.h"
+#include "PaddlesManager.h"
 
 MainMenu::MainMenu()
 {
@@ -20,12 +21,18 @@ void MainMenu::Initialise()
 }
 
 void MainMenu::Update(float deltaTime)
-{
+{ 
   InputManager* pInputManager = InputManager::GetInstance();
 
-  if (pInputManager->KeyUp(sf::Keyboard::Return))
+  if (pInputManager->KeyDown(sf::Keyboard::Return))
   {
     Game::instance.SetState(Game::GameState::Playing);
+
+    PaddlesManager* pPaddleManager = new PaddlesManager;
+    Game::instance.m_objects.AddObject(pPaddleManager);
+    pPaddleManager->Initialise(m_optionSelected);
+
+    m_active = false;
   }
   else if (pInputManager->KeyDown(sf::Keyboard::Up))
   {

@@ -65,10 +65,6 @@ void Game::GameLoop()
     {
       switch (Game::_gameState)
       {
-      case Game::GameState::Uninitialized:
-
-        _prevGameState = GameState::Uninitialized;
-        break;
       case Game::GameState::ShowingSplash:
         _prevGameState = GameState::ShowingSplash;
         break;
@@ -86,10 +82,6 @@ void Game::GameLoop()
 
         _prevGameState = GameState::ShowingMenu;
       }
-        break;
-      case Game::GameState::Playing:
-        std::cout << "Message: Playing\n";
-        _prevGameState = GameState::Playing;
         break;
       case Game::GameState::Exiting:
 

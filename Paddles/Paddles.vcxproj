@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="DrawManager.h" />
     <ClInclude Include="Game.h" />
@@ -88,10 +89,13 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="Paddle.h" />
+    <ClInclude Include="PaddlesManager.h" />
     <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -99,6 +103,8 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="PaddlesManager.cpp" />
     <ClCompile Include="SplashScreen.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

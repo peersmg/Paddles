@@ -5,6 +5,7 @@ class ObjectManager
 {
 private:
   std::list<GameObject*> m_allObjects;
+  sf::Clock m_deltaClock;
 
 public:
   ObjectManager();
