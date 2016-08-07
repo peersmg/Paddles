@@ -70,13 +70,13 @@ void Paddle::Update(float deltaTime)
   }
   else
   {
-    if (m_pBall->GetPosition().y > m_position.y+100)
+    if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) > m_position.y + 20)
     {
-      m_velocity.y = 200;
+      m_velocity.y = 250;
     }
-    else if (m_pBall->GetPosition().y < m_position.y)
+    else if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) < m_position.y+(m_rect.height/2)-20)
     {
-      m_velocity.y = -200;
+      m_velocity.y = -250;
     }
   }
 
@@ -97,6 +97,13 @@ void Paddle::ProcessCollision()
   // Check if rects intersect
   if (m_rect.intersects(m_pBall->GetRect()))
   {
-    m_pBall->SetVelocity(sf::Vector2f(-m_pBall->GetVelocity().x, m_pBall->GetVelocity().y));
+    // The distance from the center of the paddle and the center of the ball
+    float posPercent = (((m_pBall->GetPosition().y+(m_pBall->GetRect().height/2)) - m_position.y)/(m_rect.height/2))-1;
+    float yAcceleration = 200 * posPercent;
+    float xAcceleration = 200 * abs(posPercent);
+
+    std::cout << "posPercent: " << posPercent << "\n";
+
+    m_pBall->SetVelocity(sf::Vector2f(-(m_pBall->GetVelocity().x + xAcceleration), m_pBall->GetVelocity().y + yAcceleration));
   }
 }
