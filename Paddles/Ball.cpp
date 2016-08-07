@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "Game.h"
+#include <time.h>
 
 Ball::Ball()
 {
@@ -12,8 +13,11 @@ Ball::~Ball()
 
 void Ball::Initialise()
 {
+
+  std::srand(time(NULL));
+
   m_active = true;
-  m_velocity = sf::Vector2f(200,100);
+  m_velocity = sf::Vector2f(300, (rand()%500)-250);
   m_position = sf::Vector2f(Game::instance.GetWindow().getSize().x / 2, Game::instance.GetWindow().getSize().y / 2);
   m_rect = sf::FloatRect(m_position, sf::Vector2f(15, 15));
 }

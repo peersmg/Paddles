@@ -72,11 +72,11 @@ void Paddle::Update(float deltaTime)
   {
     if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) > m_position.y + 20)
     {
-      m_velocity.y = 250;
+      m_velocity.y = 220;
     }
     else if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) < m_position.y+(m_rect.height/2)-20)
     {
-      m_velocity.y = -250;
+      m_velocity.y = -220;
     }
   }
 
@@ -99,11 +99,19 @@ void Paddle::ProcessCollision()
   {
     // The distance from the center of the paddle and the center of the ball
     float posPercent = (((m_pBall->GetPosition().y+(m_pBall->GetRect().height/2)) - m_position.y)/(m_rect.height/2))-1;
-    float yAcceleration = 200 * posPercent;
-    float xAcceleration = 200 * abs(posPercent);
 
-    std::cout << "posPercent: " << posPercent << "\n";
+    float yAcceleration = 400 * posPercent;
+    float xAcceleration = 300+(50 * abs(posPercent));
 
-    m_pBall->SetVelocity(sf::Vector2f(-(m_pBall->GetVelocity().x + xAcceleration), m_pBall->GetVelocity().y + yAcceleration));
+    std::cout << "xAcceleration: " << xAcceleration << "\n";
+
+    if (m_pBall->GetVelocity().x < 0)
+    {
+      m_pBall->SetVelocity(sf::Vector2f(xAcceleration, yAcceleration));
+    }
+    else
+    {
+      m_pBall->SetVelocity(sf::Vector2f(-xAcceleration, yAcceleration));
+    }
   }
 }

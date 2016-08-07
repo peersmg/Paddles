@@ -2,11 +2,12 @@
 #include "Ball.h"
 #include "Game.h"
 #include "Paddle.h"
+#include "DrawManager.h"
+#include <string>
 
 PaddlesManager::PaddlesManager()
 {
 }
-
 
 PaddlesManager::~PaddlesManager()
 {
@@ -14,6 +15,11 @@ PaddlesManager::~PaddlesManager()
 
 void PaddlesManager::Initialise(int optionSelected)
 {
+  m_active = true;
+
+  m_playerOneScore = 0;
+  m_playerTwoScore = 0;
+
   Ball* pBall = new Ball;
   Game::instance.m_objects.AddObject(pBall);
   pBall->Initialise();
@@ -43,5 +49,8 @@ void PaddlesManager::Update(float deltaTime)
 
 void PaddlesManager::Draw()
 {
+  DrawManager* pDrawManager = DrawManager::GetInstance();
 
+  pDrawManager->DrawText("" + std::to_string(m_playerOneScore), 40, sf::Vector2f(0, 0));
+  pDrawManager->DrawText("" + std::to_string(m_playerTwoScore), 40, sf::Vector2f(Game::instance.GetWindow().getSize().x-10, 0), sf::Color::White, alignment::TOPRIGHT);
 }
