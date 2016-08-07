@@ -6,6 +6,7 @@ class Ball : public GameObject
 {
 private:
   sf::Vector2f m_velocity;
+  sf::FloatRect m_rect;
 
 public:
   Ball();
@@ -15,5 +16,8 @@ public:
   void Update(float deltaTime);
   void Draw();
 
+  sf::FloatRect GetRect();
   sf::Vector2f GetPosition();
+  sf::Vector2f GetVelocity();
+  void SetVelocity(sf::Vector2f newVelocity);
 };

@@ -29,11 +29,14 @@ void Paddle::Initialise(int player, Ball* pBall)
     m_position = sf::Vector2f(Game::instance.GetWindow().getSize().x - 65, Game::instance.GetWindow().getSize().y / 2);
   }
   
+  m_rect = sf::FloatRect(m_position, sf::Vector2f(15, 100));
 }
 
 void Paddle::Update(float deltaTime)
 {
   InputManager* pInputManager = InputManager::GetInstance();
+
+  ProcessCollision();
 
   if (m_player == 0)
   {
@@ -79,17 +82,21 @@ void Paddle::Update(float deltaTime)
 
   m_position += m_velocity*deltaTime;
 
-  ProcessCollision();
+  m_rect = sf::FloatRect(m_position, sf::Vector2f(15, 100));
 }
 
 void Paddle::Draw()
 {
   DrawManager* pDrawManager = DrawManager::GetInstance();
 
-  pDrawManager->BasicRect(sf::FloatRect(m_position, sf::Vector2f(15, 100)), sf::Color::White);
+  pDrawManager->BasicRect(m_rect, sf::Color::White);
 }
 
 void Paddle::ProcessCollision()
 {
-
+  // Check if rects intersect
+  if (m_rect.intersects(m_pBall->GetRect()))
+  {
+    m_pBall->SetVelocity(sf::Vector2f(-m_pBall->GetVelocity().x, m_pBall->GetVelocity().y));
+  }
 }

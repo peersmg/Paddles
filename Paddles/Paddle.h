@@ -8,6 +8,7 @@ private:
   sf::Vector2f m_velocity;
   int m_player;
   Ball* m_pBall;
+  sf::FloatRect m_rect;
 
 public:
   Paddle();
