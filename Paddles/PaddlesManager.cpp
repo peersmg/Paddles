@@ -6,6 +6,7 @@
 
 PaddlesManager::PaddlesManager()
 {
+  m_outBuffer.loadFromFile("sound/out.wav");
 }
 
 PaddlesManager::~PaddlesManager()
@@ -25,6 +26,8 @@ void PaddlesManager::Initialise(int optionSelected)
 
   m_leftRect = sf::FloatRect(0, 0, 10, Game::instance.GetWindow().getSize().y);
   m_rightRect = sf::FloatRect(Game::instance.GetWindow().getSize().x, 0, 10, Game::instance.GetWindow().getSize().y);
+
+  m_outSound.setBuffer(m_outBuffer);
 
   m_pBall = new Ball;
   Game::instance.m_objects.AddObject(m_pBall);
@@ -66,6 +69,8 @@ void PaddlesManager::Update(float deltaTime)
     {
       m_pPaddleTwo->Initialise(3, m_pBall);
     }
+
+    m_outSound.play();
   }
   else if (m_pBall->GetRect().intersects(m_rightRect))
   {
@@ -82,6 +87,8 @@ void PaddlesManager::Update(float deltaTime)
     {
       m_pPaddleTwo->Initialise(3, m_pBall);
     }
+
+    m_outSound.play();
   }
 
   if (m_playerOneScore >= 5 && !m_gameOver)

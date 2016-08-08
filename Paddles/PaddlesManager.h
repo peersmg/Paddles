@@ -19,6 +19,9 @@ private:
   Paddle* m_pPaddleOne;
   Paddle* m_pPaddleTwo;
 
+  sf::SoundBuffer m_outBuffer;
+  sf::Sound m_outSound;
+
 public:
   PaddlesManager();
   ~PaddlesManager();

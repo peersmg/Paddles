@@ -13,7 +13,6 @@ Ball::~Ball()
 
 void Ball::Initialise()
 {
-
   m_active = true;
   m_velocity = sf::Vector2f(500, (rand()%300)-150);
   m_position = sf::Vector2f(Game::instance.GetWindow().getSize().x / 2, Game::instance.GetWindow().getSize().y / 2);
@@ -22,7 +21,6 @@ void Ball::Initialise()
 
 void Ball::Update(float deltaTime)
 {
-  
   if (m_position.y + m_rect.height > Game::instance.GetWindow().getSize().y || m_position.y < 0)
   {
     m_velocity.y = -m_velocity.y;

@@ -10,6 +10,9 @@ private:
   Ball* m_pBall;
   sf::FloatRect m_rect;
 
+  sf::SoundBuffer m_hitBuffer;
+  sf::Sound m_hitSound;
+
 public:
   Paddle();
   ~Paddle();

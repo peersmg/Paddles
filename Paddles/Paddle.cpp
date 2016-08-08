@@ -5,6 +5,7 @@
 
 Paddle::Paddle()
 {
+  m_hitBuffer.loadFromFile("sound/hit.wav");
 }
 
 
@@ -17,6 +18,8 @@ void Paddle::Initialise(int player, Ball* pBall)
   m_active = true;
   m_player = player;
   m_pBall = pBall;
+  m_hitSound.setBuffer(m_hitBuffer);
+  
 
   m_velocity = sf::Vector2f(0, 0);
 
@@ -117,6 +120,8 @@ void Paddle::ProcessCollision()
     {
       m_pBall->SetVelocity(sf::Vector2f(-xAcceleration, yAcceleration));
     }
+
+    m_hitSound.play();
   }
 }
 
