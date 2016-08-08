@@ -12,6 +12,8 @@ void Game::Start()
 
   std::cout << "Message: Starting..." << std::endl;
 
+  std::srand(time(NULL));
+
   _mainWindow.create(sf::VideoMode(1024, 768, 32), "Pang", sf::Style::Titlebar | sf::Style::Close);
   _gameState = GameState::ShowingSplash;
 
@@ -68,13 +70,9 @@ void Game::GameLoop()
       case Game::GameState::ShowingSplash:
         _prevGameState = GameState::ShowingSplash;
         break;
-      case Game::GameState::Paused:
-        std::cout << "Message: Paused\n";
-        _prevGameState = GameState::Paused;
-        break;
       case Game::GameState::ShowingMenu:
       {
-        std::cout << "Message: Adding menu class\n";
+        std::cout << "Message: Menu\n";
 
         MainMenu* menu = new MainMenu;
         m_objects.AddObject(menu);
@@ -82,6 +80,9 @@ void Game::GameLoop()
 
         _prevGameState = GameState::ShowingMenu;
       }
+        break;
+      case Game::GameState::Playing:
+        _prevGameState = GameState::Playing;
         break;
       case Game::GameState::Exiting:
 
@@ -114,7 +115,5 @@ void Game::SetState(GameState newState)
 {
   _gameState = newState;
 }
-
-
 
 Game Game::instance;

@@ -16,6 +16,8 @@ public:
   void Update(float deltaTime);
   void Draw();
 
+  void Deactivate();
+
   sf::FloatRect GetRect();
   sf::Vector2f GetPosition();
   sf::Vector2f GetVelocity();

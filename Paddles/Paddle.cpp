@@ -70,13 +70,17 @@ void Paddle::Update(float deltaTime)
   }
   else
   {
-    if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) > m_position.y + 20)
+    if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) > m_position.y + (m_rect.height - 20))
     {
-      m_velocity.y = 220;
+      m_velocity.y = 250;
     }
-    else if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) < m_position.y+(m_rect.height/2)-20)
+    else if (m_pBall->GetPosition().y + (m_pBall->GetRect().height / 2) < m_position.y+20)
     {
-      m_velocity.y = -220;
+      m_velocity.y = -250;
+    }
+    else
+    {
+      m_velocity.y = 0;
     }
   }
 
@@ -101,7 +105,7 @@ void Paddle::ProcessCollision()
     float posPercent = (((m_pBall->GetPosition().y+(m_pBall->GetRect().height/2)) - m_position.y)/(m_rect.height/2))-1;
 
     float yAcceleration = 400 * posPercent;
-    float xAcceleration = 300+(50 * abs(posPercent));
+    float xAcceleration = 500+(50 * abs(posPercent));
 
     std::cout << "xAcceleration: " << xAcceleration << "\n";
 
@@ -114,4 +118,9 @@ void Paddle::ProcessCollision()
       m_pBall->SetVelocity(sf::Vector2f(-xAcceleration, yAcceleration));
     }
   }
+}
+
+void Paddle::Deactivate()
+{
+  m_active = false;
 }

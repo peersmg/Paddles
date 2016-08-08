@@ -1,6 +1,7 @@
 #include "PaddlesManager.h"
 #include "Game.h"
 #include "DrawManager.h"
+#include "InputManager.h"
 #include <string>
 
 PaddlesManager::PaddlesManager()
@@ -14,6 +15,8 @@ PaddlesManager::~PaddlesManager()
 void PaddlesManager::Initialise(int optionSelected)
 {
   m_active = true;
+
+  m_gameOver = false;
 
   m_playerOneScore = 0;
   m_playerTwoScore = 0;
@@ -47,6 +50,8 @@ void PaddlesManager::Initialise(int optionSelected)
 
 void PaddlesManager::Update(float deltaTime)
 {
+  InputManager* pInputManager = InputManager::GetInstance();
+
   if (m_pBall->GetRect().intersects(m_leftRect))
   {
     m_playerTwoScore++;
@@ -78,12 +83,69 @@ void PaddlesManager::Update(float deltaTime)
       m_pPaddleTwo->Initialise(3, m_pBall);
     }
   }
+
+  if (m_playerOneScore >= 5 && !m_gameOver)
+  {
+    m_pBall->Deactivate();
+    m_pPaddleOne->Deactivate();
+    m_pPaddleTwo->Deactivate();
+
+    m_gameOver = true;
+  }
+  else if (m_playerTwoScore >= 5 && !m_gameOver)
+  {
+    m_pBall->Deactivate();
+    m_pPaddleOne->Deactivate();
+    m_pPaddleTwo->Deactivate();
+
+    m_gameOver = true;
+  }
+
+  if (pInputManager->KeyUp(sf::Keyboard::Escape) && m_gameOver)
+  {
+    Game::instance.SetState(Game::GameState::ShowingMenu);
+    m_active = false;
+  }
+
+  if (pInputManager->KeyUp(sf::Keyboard::Return) && m_gameOver)
+  {
+    Initialise(m_optionSelected);
+  }
 }
 
 void PaddlesManager::Draw()
 {
   DrawManager* pDrawManager = DrawManager::GetInstance();
 
-  pDrawManager->DrawText("" + std::to_string(m_playerOneScore), 40, sf::Vector2f(0, 0));
-  pDrawManager->DrawText("" + std::to_string(m_playerTwoScore), 40, sf::Vector2f(Game::instance.GetWindow().getSize().x-10, 0), sf::Color::White, alignment::TOPRIGHT);
+  pDrawManager->BasicRect(sf::FloatRect((Game::instance.GetWindow().getSize().x / 2)-2.5, 0, 5, Game::instance.GetWindow().getSize().y), sf::Color(200, 200, 200));
+
+  pDrawManager->DrawText(std::to_string(m_playerOneScore), 70, sf::Vector2f(20, 0));
+  pDrawManager->DrawText(std::to_string(m_playerTwoScore), 70, sf::Vector2f(Game::instance.GetWindow().getSize().x-20, 0), sf::Color::White, alignment::TOPRIGHT);
+
+  if (m_playerOneScore + m_playerTwoScore == 0)
+  {
+    pDrawManager->DrawText("W", 100, sf::Vector2f(Game::instance.GetWindow().getSize().x / 4, Game::instance.GetWindow().getSize().y / 4), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+    pDrawManager->DrawText("S", 100, sf::Vector2f(Game::instance.GetWindow().getSize().x / 4, (Game::instance.GetWindow().getSize().y / 4) * 3), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+
+    if (m_optionSelected == 1)
+    {
+      pDrawManager->DrawText("Up", 100, sf::Vector2f((Game::instance.GetWindow().getSize().x / 4) * 3, Game::instance.GetWindow().getSize().y / 4), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+      pDrawManager->DrawText("Down", 100, sf::Vector2f((Game::instance.GetWindow().getSize().x / 4) * 3, (Game::instance.GetWindow().getSize().y / 4) * 3), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+    }
+  }
+
+  if (m_playerOneScore >= 5 && m_gameOver)
+  {
+    pDrawManager->DrawText("Win", 100, sf::Vector2f((Game::instance.GetWindow().getSize().x / 4), Game::instance.GetWindow().getSize().y / 2), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+
+    pDrawManager->DrawText("Press esc to exit or \nenter to play again", 30, sf::Vector2f((Game::instance.GetWindow().getSize().x / 4), 
+                           Game::instance.GetWindow().getSize().y / 1.2f), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+  }
+  else if (m_playerTwoScore >= 5 && m_gameOver)
+  {
+    pDrawManager->DrawText("Win", 100, sf::Vector2f((Game::instance.GetWindow().getSize().x / 4) * 3, Game::instance.GetWindow().getSize().y / 2), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+
+    pDrawManager->DrawText("Press esc to exit or \nenter to play again", 30, sf::Vector2f((Game::instance.GetWindow().getSize().x / 4)*3,
+      Game::instance.GetWindow().getSize().y / 1.2f), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
+  }
 }

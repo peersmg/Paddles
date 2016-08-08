@@ -18,6 +18,8 @@ public:
   void Update(float deltaTime);
   void Draw();
 
+  void Deactivate();
+
   void ProcessCollision();
 };
 

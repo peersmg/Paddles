@@ -14,10 +14,8 @@ Ball::~Ball()
 void Ball::Initialise()
 {
 
-  std::srand(time(NULL));
-
   m_active = true;
-  m_velocity = sf::Vector2f(300, (rand()%500)-250);
+  m_velocity = sf::Vector2f(500, (rand()%300)-150);
   m_position = sf::Vector2f(Game::instance.GetWindow().getSize().x / 2, Game::instance.GetWindow().getSize().y / 2);
   m_rect = sf::FloatRect(m_position, sf::Vector2f(15, 15));
 }
@@ -59,4 +57,9 @@ void Ball::SetVelocity(sf::Vector2f newVelocity)
 sf::Vector2f Ball::GetVelocity()
 {
   return m_velocity;
+}
+
+void Ball::Deactivate()
+{
+  m_active = false;
 }

@@ -11,6 +11,8 @@ private:
   int m_playerTwoScore;
   int m_optionSelected;
 
+  bool m_gameOver;
+
   sf::FloatRect m_leftRect;
   sf::FloatRect m_rightRect;
   Ball* m_pBall;
