@@ -8,11 +8,13 @@ private:
   sf::Vector2f m_velocity;
   sf::FloatRect m_rect;
 
+  bool m_twoPlayer;
+
 public:
   Ball();
   ~Ball();
 
-  void Initialise();
+  void Initialise(bool twoPlayer);
   void Update(float deltaTime);
   void Draw();
 

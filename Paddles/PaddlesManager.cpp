@@ -29,26 +29,30 @@ void PaddlesManager::Initialise(int optionSelected)
 
   m_outSound.setBuffer(m_outBuffer);
 
-  m_pBall = new Ball;
-  Game::instance.m_objects.AddObject(m_pBall);
-  m_pBall->Initialise();
-
-  m_pPaddleOne = new Paddle;
-  Game::instance.m_objects.AddObject(m_pPaddleOne);
-  m_pPaddleOne->Initialise(0, m_pBall);
-
   if (m_optionSelected == 1)
   {
+    m_pBall = new Ball;
+    Game::instance.m_objects.AddObject(m_pBall);
+    m_pBall->Initialise(true);
+
     m_pPaddleTwo = new Paddle;
     Game::instance.m_objects.AddObject(m_pPaddleTwo);
     m_pPaddleTwo->Initialise(1, m_pBall);
   }
   else
   {
+    m_pBall = new Ball;
+    Game::instance.m_objects.AddObject(m_pBall);
+    m_pBall->Initialise(false);
+
     m_pPaddleTwo = new Paddle;
     Game::instance.m_objects.AddObject(m_pPaddleTwo);
     m_pPaddleTwo->Initialise(3, m_pBall);
   }
+
+  m_pPaddleOne = new Paddle;
+  Game::instance.m_objects.AddObject(m_pPaddleOne);
+  m_pPaddleOne->Initialise(0, m_pBall);
 }
 
 void PaddlesManager::Update(float deltaTime)
@@ -58,35 +62,40 @@ void PaddlesManager::Update(float deltaTime)
   if (m_pBall->GetRect().intersects(m_leftRect))
   {
     m_playerTwoScore++;
-    m_pBall->Initialise();
-    m_pPaddleOne->Initialise(0, m_pBall);
-   
+
     if (m_optionSelected == 1)
     {
+      m_pBall->Initialise(true);
       m_pPaddleTwo->Initialise(1, m_pBall);
     }
     else
     {
+      m_pBall->Initialise(false);
       m_pPaddleTwo->Initialise(3, m_pBall);
     }
+
+    m_pPaddleOne->Initialise(0, m_pBall);
 
     m_outSound.play();
   }
   else if (m_pBall->GetRect().intersects(m_rightRect))
   {
     m_playerOneScore++;
-    m_pBall->Initialise();
-
-    m_pPaddleOne->Initialise(0, m_pBall);
 
     if (m_optionSelected == 1)
     {
+      m_pBall->Initialise(true);
       m_pPaddleTwo->Initialise(1, m_pBall);
+
     }
     else
     {
+      m_pBall->Initialise(false);
       m_pPaddleTwo->Initialise(3, m_pBall);
+
     }
+
+    m_pPaddleOne->Initialise(0, m_pBall);
 
     m_outSound.play();
   }

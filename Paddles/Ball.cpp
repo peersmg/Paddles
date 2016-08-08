@@ -11,12 +11,29 @@ Ball::~Ball()
 {
 }
 
-void Ball::Initialise()
+void Ball::Initialise(bool twoPlayer)
 {
+  m_twoPlayer = twoPlayer;
+
   m_active = true;
-  m_velocity = sf::Vector2f(500, (rand()%300)-150);
   m_position = sf::Vector2f(Game::instance.GetWindow().getSize().x / 2, Game::instance.GetWindow().getSize().y / 2);
   m_rect = sf::FloatRect(m_position, sf::Vector2f(15, 15));
+  
+  if (m_twoPlayer)
+  {
+    if (rand() % 100 < 50)
+    {
+      m_velocity = sf::Vector2f(500, (rand() % 300) - 150);
+    }
+    else
+    {
+      m_velocity = sf::Vector2f(-500, (rand() % 300) - 150);
+    }
+  }
+  else
+  {
+    m_velocity = sf::Vector2f(500, (rand() % 300) - 150);
+  }
 }
 
 void Ball::Update(float deltaTime)
