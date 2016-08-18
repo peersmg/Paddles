@@ -8,29 +8,19 @@ ObjectManager::ObjectManager()
 
 ObjectManager::~ObjectManager()
 {
-  DeleteAllObjects();
 }
 
 void ObjectManager::AddObject(GameObject *newObject)
 {
-
-  // Add the object after the next highest draw depth
-
-  auto it = m_allObjects.begin();
-
-  while (it != m_allObjects.end() && (*it)->m_drawdepth < newObject->m_drawdepth)
-  {
-    ++it;
-  }
-  m_allObjects.insert(it, newObject);
+  // Add the object to the end of the list
+  m_allObjects.insert(m_allObjects.end(), newObject);
 }
 
 void ObjectManager::DeleteInactiveObjects()
 {
-
-  // Delete incactive objects
   auto it = m_allObjects.begin();
 
+  // Iterate through all Game Objects and remove the ones with m_active set to false
   for (; it != m_allObjects.end(); ++it)
   {
     if (!(*it)->m_active)
@@ -40,21 +30,12 @@ void ObjectManager::DeleteInactiveObjects()
     }
   }
 
-  // Remove objects that have been set to nullptr
-  auto ita = std::remove(m_allObjects.begin(), m_allObjects.end(), nullptr);
-  m_allObjects.erase(ita, m_allObjects.end());
-}
+  // Find all the values in the list set to nullptr and push them to the end of the vector
+  auto itr = std::remove(m_allObjects.begin(), m_allObjects.end(), nullptr);
 
-void ObjectManager::DeleteAllObjects()
-{
-  auto it = m_allObjects.begin();
-
-  for (; it != m_allObjects.end(); ++it)
-  {
-    delete *it;
-  }
-
-  m_allObjects.clear();
+  // Erase the values set to nullptr from the list
+  m_allObjects.erase(itr, m_allObjects.end());
+  
 }
 
 void ObjectManager::DrawAll()
@@ -68,7 +49,6 @@ void ObjectManager::DrawAll()
       (*it)->Draw();
     }
   }
-
 }
 
 void ObjectManager::UpdateAll()
@@ -77,6 +57,7 @@ void ObjectManager::UpdateAll()
 
   sf::Time deltaTime = m_deltaClock.restart();
 
+  // Iterate through all the objects and update them
   for (; it != m_allObjects.end(); ++it)
   {
     if ((*it)->m_active)
