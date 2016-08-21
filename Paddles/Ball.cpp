@@ -19,6 +19,7 @@ void Ball::Initialise(bool twoPlayer)
   m_position = sf::Vector2f(Game::instance.GetWindow().getSize().x / 2, Game::instance.GetWindow().getSize().y / 2);
   m_rect = sf::FloatRect(m_position, sf::Vector2f(15, 15));
   
+  // If there is one player the ball will always start by moving towards the AI
   if (m_twoPlayer)
   {
     if (rand() % 100 < 50)
@@ -38,6 +39,7 @@ void Ball::Initialise(bool twoPlayer)
 
 void Ball::Update(float deltaTime)
 {
+  // If the ball hits the bottom or top of the screen reverse its y velocity
   if (m_position.y + m_rect.height > Game::instance.GetWindow().getSize().y || m_position.y < 0)
   {
     m_velocity.y = -m_velocity.y;

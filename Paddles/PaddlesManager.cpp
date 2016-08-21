@@ -24,11 +24,13 @@ void PaddlesManager::Initialise(int optionSelected)
 
   m_optionSelected = optionSelected;
 
+  // Collision boxes for left and right of screen
   m_leftRect = sf::FloatRect(0, 0, 10, Game::instance.GetWindow().getSize().y);
   m_rightRect = sf::FloatRect(Game::instance.GetWindow().getSize().x, 0, 10, Game::instance.GetWindow().getSize().y);
 
   m_outSound.setBuffer(m_outBuffer);
 
+  // If two players was selected create a player paddle on the right, if not create a AI paddle
   if (m_optionSelected == 1)
   {
     m_pBall = new Ball;
@@ -50,6 +52,7 @@ void PaddlesManager::Initialise(int optionSelected)
     m_pPaddleTwo->Initialise(3, m_pBall);
   }
 
+  // Create the player paddle on the left
   m_pPaddleOne = new Paddle;
   Game::instance.m_objects.AddObject(m_pPaddleOne);
   m_pPaddleOne->Initialise(0, m_pBall);
@@ -59,6 +62,7 @@ void PaddlesManager::Update(float deltaTime)
 {
   InputManager* pInputManager = InputManager::GetInstance();
 
+  // If the ball collides reset the ball and increase the respective players score
   if (m_pBall->GetRect().intersects(m_leftRect))
   {
     m_playerTwoScore++;
@@ -100,6 +104,7 @@ void PaddlesManager::Update(float deltaTime)
     m_outSound.play();
   }
 
+  // If a player reaches 5 points they win the game
   if (m_playerOneScore >= 5 && !m_gameOver)
   {
     m_pBall->Deactivate();
@@ -117,6 +122,7 @@ void PaddlesManager::Update(float deltaTime)
     m_gameOver = true;
   }
 
+  // If the game is over allow the player to exit to the menu or restart the game
   if (pInputManager->KeyUp(sf::Keyboard::Escape) && m_gameOver)
   {
     Game::instance.SetState(Game::GameState::ShowingMenu);
@@ -135,9 +141,11 @@ void PaddlesManager::Draw()
 
   pDrawManager->BasicRect(sf::FloatRect((Game::instance.GetWindow().getSize().x / 2)-2.5, 0, 5, Game::instance.GetWindow().getSize().y), sf::Color(200, 200, 200));
 
+  // Show the player scores
   pDrawManager->DrawText(std::to_string(m_playerOneScore), 70, sf::Vector2f(20, 0));
   pDrawManager->DrawText(std::to_string(m_playerTwoScore), 70, sf::Vector2f(Game::instance.GetWindow().getSize().x-20, 0), sf::Color::White, alignment::TOPRIGHT);
 
+  // If neither player has scored show the controls
   if (m_playerOneScore + m_playerTwoScore == 0)
   {
     pDrawManager->DrawText("W", 100, sf::Vector2f(Game::instance.GetWindow().getSize().x / 4, Game::instance.GetWindow().getSize().y / 4), sf::Color(200, 200, 200), alignment::MIDDLECENTER);
@@ -150,6 +158,7 @@ void PaddlesManager::Draw()
     }
   }
 
+  // Show game over UI
   if (m_playerOneScore >= 5 && m_gameOver)
   {
     pDrawManager->DrawText("Win", 100, sf::Vector2f((Game::instance.GetWindow().getSize().x / 4), Game::instance.GetWindow().getSize().y / 2), sf::Color(200, 200, 200), alignment::MIDDLECENTER);

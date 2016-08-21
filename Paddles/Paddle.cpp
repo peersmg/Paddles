@@ -23,6 +23,7 @@ void Paddle::Initialise(int player, Ball* pBall)
 
   m_velocity = sf::Vector2f(0, 0);
 
+  // Position the paddle based on which player this paddle is
   if (m_player == 0)
   {
     m_position = sf::Vector2f(50, Game::instance.GetWindow().getSize().y / 2);
@@ -41,6 +42,7 @@ void Paddle::Update(float deltaTime)
 
   ProcessCollision();
 
+  // Respond to controlls based on which player this paddle is
   if (m_player == 0)
   {
     if (pInputManager->KeyDown(sf::Keyboard::W))

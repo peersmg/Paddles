@@ -7,29 +7,32 @@
 class PaddlesManager : public GameObject
 {
 private:
-  int m_playerOneScore;
-  int m_playerTwoScore;
-  int m_optionSelected;
+  int m_playerOneScore;         // First player score
+  int m_playerTwoScore;         // Second player score
+  int m_optionSelected;         // The menu option selected
 
-  bool m_gameOver;
+  bool m_gameOver;              // Has one player reached a score of 5
 
-  sf::FloatRect m_leftRect;
-  sf::FloatRect m_rightRect;
-  Ball* m_pBall;
-  Paddle* m_pPaddleOne;
-  Paddle* m_pPaddleTwo;
+  sf::FloatRect m_leftRect;     // Collider box on left side of screen
+  sf::FloatRect m_rightRect;    // Collider box on right side of screen
+  Ball* m_pBall;                // Pointer to the ball
+  Paddle* m_pPaddleOne;         // First player paddle
+  Paddle* m_pPaddleTwo;         // Second player paddle
 
-  sf::SoundBuffer m_outBuffer;
-  sf::Sound m_outSound;
+  sf::SoundBuffer m_outBuffer;  // Buffer for 'out' sound
+  sf::Sound m_outSound;         // 'out' sound container
 
 public:
   PaddlesManager();
   ~PaddlesManager();
 
+  // Initialise the paddle manager
   void Initialise(int players);
+  
+  // Check if the ball has entered either of the colliders
   void Update(float deltaTime);
+  
+  // Draw the user interface
   void Draw();
-
-  void IncrementScore(int optionSelected);
 };
 
